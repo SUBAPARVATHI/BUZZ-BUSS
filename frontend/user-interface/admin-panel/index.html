@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzz Buss - Admin Panel</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Header Styles */
+    header {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    /* Main Section Styles */
+    main {
+      padding: 40px;
+      text-align: center;
+    }
+    main h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    main p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #27ae60;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #1e8449;
+    }
+    /* Footer Styles */
+    footer {
+      background-color: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Buzz Buss - Admin Dashboard</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+    </nav>
+  </header>
+  
+  <!-- Main Section -->
+  <main>
+    <h2>Admin Login</h2>
+    <p>
+      Please log in to access the admin dashboard. Manage buses, monitor ticket bookings, and view real-time updates on system operations.
+    </p>
+    <form action="dashboard.html" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
+      <div style="margin-bottom: 15px;">
+        <label for="username" style="display: block; margin-bottom: 5px;">Username:</label>
+        <input type="text" id="username" name="username" required style="width: 100%; padding: 8px;">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label for="password" style="display: block; margin-bottom: 5px;">Password:</label>
+        <input type="password" id="password" name="password" required style="width: 100%; padding: 8px;">
+      </div>
+      <button class="btn" type="submit" style="width: 100%;">Login</button>
+    </form>
+    <br>
+    <a class="btn" href="google-oauth.html">Login with Google</a>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Buzz Buss. All rights reserved.</p>
+  </footer>
+</body>
+</html>
