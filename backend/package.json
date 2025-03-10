@@ -1,0 +1,15 @@
+{
+    "name": "buzz-buss-backend",
+    "version": "1.0.0",
+    "description": "Backend for Buzz Buss project",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "body-parser": "^1.19.0",
+      "cors": "^2.8.5"
+    }
+  }
+  
