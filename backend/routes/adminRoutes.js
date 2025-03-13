@@ -1,29 +1,52 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const Bus = require('../models/Bus');
+const Ticket = require('../models/Ticket');
 
-// Dummy admin credentials for demonstration
-const adminUser = { username: 'admin', password: 'password' };
+// JWT authentication middleware
+const authenticate = (req, res, next) => {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
 
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  if (username === adminUser.username && password === adminUser.password) {
-    // In production, you would return a real token (JWT or similar)
-    res.json({ message: 'Login successful', token: 'dummy-token' });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+// Update bus details (requires authentication with real-time update)
+router.put('/buses/:id', authenticate, async (req, res) => {
+  const { route, estimatedArrival, availableSeats, seats } = req.body;
+  try {
+    const bus = await Bus.findById(req.params.id);
+    if (!bus) return res.status(404).json({ message: 'Bus not found' });
+    if (route) bus.route = route;
+    if (estimatedArrival) bus.estimatedArrival = estimatedArrival;
+    if (availableSeats !== undefined) bus.availableSeats = availableSeats;
+    if (seats) bus.seats = seats;
+    await bus.save();
+
+    // Emit a real-time event for bus update
+    const io = req.app.get('io');
+    io.emit('busUpdated', { bus });
+
+    res.json({ message: `Bus ${bus._id} updated successfully`, bus });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Update bus details (e.g., route update)
-router.put('/buses/:id', (req, res) => {
-  // In a real app, update the bus details in your database.
-  res.json({ message: `Bus ${req.params.id} updated successfully` });
-});
-
-// Get all tickets for admin overview
-router.get('/tickets', (req, res) => {
-  // In a production app, you would retrieve tickets from your database.
-  res.json({ message: 'List of all tickets' });
+// Get all tickets for admin overview (requires authentication)
+router.get('/tickets', authenticate, async (req, res) => {
+  try {
+    const tickets = await Ticket.find().populate('bus');
+    res.json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 module.exports = router;
