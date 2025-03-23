@@ -1,4 +1,5 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,6 +7,22 @@ const passport = require('passport');
 const connectDB = require('./config/db');
 const http = require('http');
 const socketIo = require('socket.io');
+
+
+
+const mongoURI = process.env.MONGO_URI; // Get MongoDB connection string
+
+if (!mongoURI) {
+  console.error('Error: MONGO_URI is not defined. Check your .env file.');
+  process.exit(1);
+}
+
+mongoose.connect(mongoURI, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
+})
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Connect to MongoDB
 connectDB();
